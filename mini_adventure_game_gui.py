@@ -3,10 +3,20 @@ import random
 import PySimpleGUI as sg
 from PySimpleGUI.PySimpleGUI import Button
 
-sg.theme('Dark Blue 3')
+"""
+Goal here is to explore and start using PySimpleGUI to get more hands-on. 
+The game here has a similar concept as the previous exercise.
+"""
 
+sg.theme('Dark Blue 3')
 title = 'Adventure Game!'
 
+"""
+Taken from the last exercise. 
+It's great that I've a function that I could reuse instead of creating another one.
+Saved me some time.
+This function is to simulate a dice roll
+"""
 def dice_roll(level):
 
     result = ''
@@ -36,18 +46,12 @@ def dice_roll(level):
 
     return result, value
 
-def update_result_of_layout4(result,dice_result):
-    layout = make_layout('layout4')
-    
-    #update layout
-    if result == 'WIN':
-        layout[1] = [sg.Text(f'CONGRATULATIONS! DICE ROLL {dice_result}! YOU WIN!')]
-    elif result == 'LOSE':
-        print('LOSE')
-        layout[1] = [sg.Text(f'DICE ROLL {dice_result}! YOU DIED!')]
 
-    return layout
-
+"""
+Since we cannot reuse a layout in PySimpleGUI, 
+I've created a function that returns the layout type required everytime a window needs to be shown.
+This function accepts the layout type, then returns the layout specified.
+"""
 def make_layout(layout_type):
     
     layout = []
@@ -69,6 +73,23 @@ def make_layout(layout_type):
 
     return layout
 
+"""
+Layout4 will have a different text based on whether the player wins or loses.
+This function is to change the layout result
+"""
+def make_layout4_and_update_result(result,dice_result):
+    layout = make_layout('layout4')
+    
+    #update layout
+    if result == 'WIN':
+        layout[1] = [sg.Text(f'CONGRATULATIONS! DICE ROLL {dice_result}! YOU WIN!')]
+    elif result == 'LOSE':
+        layout[1] = [sg.Text(f'DICE ROLL {dice_result}! YOU DIED!')]
+
+    return layout
+
+# initialize the window
+# shows the 1st phase of the game
 layout = make_layout('layout1')
 window = sg.Window(title, layout)
 event, values = window.read()
@@ -79,9 +100,11 @@ while True:
     if event == sg.WIN_CLOSED or event == '_no_':
         break
     
-    # 2nd phase
+    # ------2nd phase of the game-------
     if event == '_go_to_mountains_':
+        #close the previous window before starting a new one
         window.close()
+        
         layout = make_layout('layout2')
         window = sg.Window(title, layout)
         event, values = window.read()
@@ -89,35 +112,35 @@ while True:
     if event == '_go_to_castle_':
         window.close()
         layout = make_layout('layout3')
+        
         window = sg.Window(title, layout)
         event, values = window.read()
     
-    # 3rd phase
+    # ------3rd phase of the game-------
     if event == '_fight_':
         window.close()
         
-        #get result
+        # roll dice
         result, dice_result = dice_roll('hard')
-
         
         #update layout
-        layout = update_result_of_layout4(result, dice_result)
-        window = sg.Window(title, layout)
+        layout = make_layout4_and_update_result(result, dice_result)
         
+        window = sg.Window(title, layout)
         event, values = window.read()
         
     if event == '_eat_':
         window.close()
         
-        #get result
+        # roll dice
         result, dice_result = dice_roll('easy')
 
         #update layout
-        layout = update_result_of_layout4(result, dice_result)
+        layout = make_layout4_and_update_result(result, dice_result)
         window = sg.Window(title, layout)
         event, values = window.read()
     
-    # restart page
+    # --------go to the 1st phase-----
     if event == '_yes_':
         window.close()
         layout = make_layout('layout1')
