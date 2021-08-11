@@ -3,21 +3,19 @@ import random
 import PySimpleGUI as sg
 from PySimpleGUI.PySimpleGUI import Button
 
-"""
-Goal here is to explore and start using PySimpleGUI to get more hands-on. 
-The game here has a similar concept as the previous exercise.
-"""
+# Goal here is to explore and start using PySimpleGUI to get more hands-on. 
+# The game here has a similar concept as the previous exercise.
 
 sg.theme('Dark Blue 3')
 title = 'Adventure Game!'
 
-"""
-Taken from the last exercise. 
-It's great that I've a function that I could reuse instead of creating another one.
-Saved me some time.
-This function is to simulate a dice roll
-"""
 def dice_roll(level):
+    """
+    Taken from the last exercise. 
+    It's great that I've a function that I could reuse instead of creating another one.
+    Saved me some time.
+    This function is to simulate a dice roll
+    """
 
     result = ''
     value = 0
@@ -46,14 +44,13 @@ def dice_roll(level):
 
     return result, value
 
-
-"""
-Since we cannot reuse a layout in PySimpleGUI, 
-I've created a function that returns the layout type required everytime a window needs to be shown.
-This function accepts the layout type, then returns the layout specified.
-"""
 def make_layout(layout_type):
-    
+    """
+    Since we cannot reuse a layout in PySimpleGUI, 
+    I've created a function that returns the layout type required everytime a window needs to be shown.
+    This function accepts the layout type, then returns the layout specified.
+    """
+
     layout = []
 
     if layout_type == 'layout1':
@@ -73,11 +70,12 @@ def make_layout(layout_type):
 
     return layout
 
-"""
-Layout4 will have a different text based on whether the player wins or loses.
-This function is to change the layout result
-"""
+
 def make_layout4_and_update_result(result,dice_result):
+    """
+    Layout4 will have a different text based on whether the player wins or loses.
+    This function is to change the layout result
+    """
     layout = make_layout('layout4')
     
     #update layout
